@@ -59,10 +59,6 @@ namespace U_Dumper
 
                 var task_defer = util.getPrologue(scanner.scan_xrefs("Maximum re-entrancy depth (%i) exceeded calling task.defer", 1).Last());
              
-                var task_spawn = util.getPrologue(scanner.scan("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 A1 ?? ?? ?? ?? 50 83 EC ?? A1 ?? ?? ?? ?? 33 C5 89 45 EC 56 57 50 8D 45 F4 64 A3 ?? ?? ?? ?? 8B 75 08 C7 45 E8 ?? ?? ?? ??").Last());
-
-                var pseudo2addr = util.getPrologue(scanner.scan("8B C1 81 FA ?? ?? ?? ?? 74 ?? 56").Last());
-
                 var luao_nil_object = util.getPointers(util.getPrologue(scanner.scan("?? ?? ?? ?? 83 7F 0C ?? 0F 84 ?? ?? ?? ?? 83 7F 0C ?? 0F 84 ?? ?? ?? ?? 8B 8D A4 FE FF FF").Last()));
                 
                 var print = util.getPrologue(scanner.scan_xrefs("Current identity is %d", 1).Last());
@@ -106,11 +102,9 @@ namespace U_Dumper
                 Console.WriteLine("\n RASLR");
                 LogFunction("get_scheduler ", util.raslr(get_scheduler_calls[2]));
                 LogFunction("task_defer ", util.raslr(task_defer));
-                LogFunction("task_spawn ", util.raslr(task_spawn));
                 LogFunction("lua_vm_load ", util.raslr(lua_vm_load_calls[17]));
                 LogFunction("print", util.raslr(print_calls[3]));
                 LogFunction("global_state", util.raslr(global_state));
-                LogFunction("pseudo2addr ", util.raslr(pseudo2addr));
                 LogFunction("pushkclosure ", util.raslr(pushkclosure));
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -118,11 +112,9 @@ namespace U_Dumper
                 Console.WriteLine("\n ASLR");
                 LogFunction("get_scheduler ", util.raslr(get_scheduler_calls[2]) - 0x400000);
                 LogFunction("task_defer ", util.raslr(task_defer) - 0x400000);
-                LogFunction("task_spawn ", util.raslr(task_spawn) - 0x400000);
                 LogFunction("lua_vm_load ", util.raslr(lua_vm_load_calls[17]) - 0x400000);
                 LogFunction("print", util.raslr(print_calls[3]) - 0x400000);
                 LogFunction("global_state", util.raslr(global_state) - 0x400000);
-                LogFunction("pseudo2addr ", util.raslr(pseudo2addr) - 0x400000);
                 LogFunction("pushkclosure ", util.raslr(pushkclosure) - 0x400000);
                 
                 Console.ForegroundColor = ConsoleColor.Blue;
